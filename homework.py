@@ -16,6 +16,15 @@ RETRY_TIME = 600
 ENDPOINT = 'https://practicum.yandex.ru/api/user_api/homework_statuses/'
 HEADERS = {'Authorization': f'OAuth {PRACTICUM_TOKEN}'}
 BOT = telegram.Bot(token=TELEGRAM_TOKEN)
+load_dotenv()
+
+PRACTICUM_TOKEN = ...
+TELEGRAM_TOKEN = ...
+TELEGRAM_CHAT_ID = ...
+
+RETRY_TIME = 600
+ENDPOINT = 'https://practicum.yandex.ru/api/user_api/homework_statuses/'
+HEADERS = {'Authorization': f'OAuth {PRACTICUM_TOKEN}'}
 
 HOMEWORK_STATUSES = {
     'approved': 'Работа проверена: ревьюеру всё понравилось. Ура!',
@@ -104,7 +113,6 @@ def parse_status(homework):
     if verdict is None:
         verdict = 'Ошибка в статусе работы'
         log.error(verdict)
-    return f'Изменился статус проверки работы "{homework_name}". {verdict}'
 
 
 def check_tokens():
