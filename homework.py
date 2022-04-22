@@ -41,7 +41,7 @@ def send_message(bot, message):
             log.info('Сообщение отправлено')
         return True
     except Exception as error:
-        message = f'Сбой при отправке сообщения'
+        message = f'Сбой при отправке сообщения: {error}'
         log.error(message)
         return False
 
@@ -63,10 +63,10 @@ def get_api_answer(current_timestamp):
             send_message(BOT, message)
             log.info(f'Бот отправил сообщение {message}')
         else:
-            message = f'Произошел сбои при запросе к эндпоинту'
+            message = 'Произошел сбои при запросе к эндпоинту'
             log.error(message)
     except Exception as error:
-        message = f'Сбой в работе программы'
+        message = 'Сбой в работе программы'
         log.error(message)
         log.error(error)
         send_message(BOT, message)
@@ -76,13 +76,13 @@ def get_api_answer(current_timestamp):
 def check_response(response):
     """Проверяет ответ API на корректность."""
     if type(response) is not dict:
-        message = f'Ответ API не является словарем'
+        message = 'Ответ API не является словарем'
         log.error(message)
         if 'homeworks' not in response.keys():
-            message = f'Ответ API не содержит ключа homeworks'
+            message = 'Ответ API не содержит ключа homeworks'
             log.error(message)
             if len(response) == 0:
-                message = f'Словарь значений пуст'
+                message = 'Словарь значений пуст'
                 log.error(message)
     homework = response.get('homeworks')
     return homework
@@ -92,6 +92,8 @@ def parse_status(homework):
     """Извлекает конкретный статус домашней работы."""
     try:
         homework_name = homework['homework_name']
+        if len(homework_name) > 0:
+            log.debug(homework_name)
     except KeyError as error:
         message = f'Ошибка доступа по ключу homework_name {error}'
         log.error(message)
@@ -117,8 +119,8 @@ def check_tokens():
         return True
     except Exception as error:
         message = (
-            f' Отсутствует обязательная переменная окружения: {variable} '
-            f'Программа принудительно остановлена. ')
+            f' Отсутствует обязательная переменная окружения: {variable}'
+            f'Программа принудительно остановлена: {error}. ')
         log.critical(message)
         return False
 
